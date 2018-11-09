@@ -11,9 +11,9 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.sayHello"
+    "onCommand:extension.checkScriptSyntax"
   ],
-  "main": "./extension",
+  "main": "./src/extension",
   "contributes": {
     "commands": [
       {
@@ -21,15 +21,6 @@
         "title": "Checks the syntax of QAE script"
       }
     ],
-    "menus": {
-      "debug/qlik": [
-        {
-          "when": "resourceLangId == qvs",
-          "command": "extension.checkScriptSyntax",
-          "group": "core-script"
-        }
-      ]
-    },
     "configuration": {
       "engine": "./config.json"
     }
@@ -46,6 +37,7 @@
     "@types/mocha": "^2.2.42"
   },
   "dependencies": {
-    "enigma.js": "^2.3.0"
+    "enigma.js": "^2.3.0",
+    "ws": "^6.1.0"
   }
 }
