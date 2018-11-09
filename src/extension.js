@@ -1,6 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-const { window, StatusBarAlignment, commands } = require('vscode');
+const { window, StatusBarAlignment, commands, languages, Range, Diagnostic, DiagnosticSeverity } = require('vscode');
 const { checkScriptSyntax } = require("./check-script-syntax")
 
 let nbrScriptErrors = 0;
@@ -19,6 +19,16 @@ function activate(context) {
 
     const editor = window.activeTextEditor;
     const script = editor._documentData._lines.join('\r\n');
+    const uri = editor._documentData._uri;
+
+    let diagnosticCollection = languages.createDiagnosticCollection("QVS");
+    let diagnostics = [];
+    
+    const range = new Range(0, 1);
+    const message = 'The human-readable message.';
+
+    diagnostics.push(new Diagnostic(range, message, DiagnosticSeverity.Warning));
+    diagnosticCollection.set(uri, diagnostics);
 
     // Display a message box to the user
     window.showInformationMessage('Lets check the script');
