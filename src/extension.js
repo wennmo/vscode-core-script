@@ -1,13 +1,15 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-const vscode = require('vscode');
+const { window, workspace, StatusBarAlignment, commands } = require('vscode');
 const WebSocket = require('ws');
 const net = require("net");
 const enigma = require('enigma.js');
 const schema = require('enigma.js/schemas/12.170.2.json');
 
+let nbrScriptErrors = 0;
+
 async function checkScriptSyntax(script) {
-  const conf = vscode.workspace.getConfiguration("engine");
+  const conf = workspace.getConfiguration("engine");
   const host = conf.get("host");
   const port = conf.get("port");
 
@@ -29,7 +31,7 @@ async function checkScriptSyntax(script) {
     const errors = await app.checkScriptSyntax();
     console.log(`Errors: ${JSON.stringify(errors)}`);
     session.close();
-    vscode.window.showInformationMessage(`Found errors: ${JSON.stringify(errors)}`);
+    window.showInformationMessage(`Found errors: ${JSON.stringify(errors)}`);
     return errors;
   }
   return [];
@@ -41,7 +43,7 @@ function isReachable(port, opts) {
     const socket = new net.Socket();
     const onError = (e) => {
       socket.destroy();
-      vscode.window.showErrorMessage('Unable to connect to the Qlik Associative Engine.');
+      window.showErrorMessage('Unable to connect to the Qlik Associative Engine.');
       resolve(false);
     };
     socket.setTimeout(opts.timeout);
@@ -58,18 +60,22 @@ function isReachable(port, opts) {
 // your extension is activated the very first time the command is executed
 function activate(context) {
 
+  const scriptErrors = window.createStatusBarItem(StatusBarAlignment.Right, 100);
+
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with  registerCommand
   // The commandId parameter must match the command field in package.json
-  let disposable = vscode.commands.registerCommand('extension.checkScriptSyntax', async function () {
+  let disposable = commands.registerCommand('extension.checkScriptSyntax', async function () {
     // The code you place here will be executed every time your command is executed
 
-    const editor = vscode.window.activeTextEditor;
+    const editor = window.activeTextEditor;
     const script = editor._documentData._lines.join('\r\n');
 
     // Display a message box to the user
-    vscode.window.showInformationMessage('Lets check the script');
+    window.showInformationMessage('Lets check the script');
     const errors = await checkScriptSyntax(script);
+    nbrScriptErrors = errors.length;
+    updateStatus(scriptErrors);
   });
 
   context.subscriptions.push(disposable);
@@ -80,3 +86,16 @@ exports.activate = activate;
 function deactivate() {
 }
 exports.deactivate = deactivate;
+
+function updateStatus(status) {
+	let errors = nbrScriptErrors;
+	if (errors) {
+		status.text = `$(megaphone) Number of script errors: ${errors}`;
+	}
+
+	if (errors) {
+		status.show();
+	} else {
+		status.hide();
+	}
+}
