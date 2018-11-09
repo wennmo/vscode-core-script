@@ -11,7 +11,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.checkScriptSyntax"
+    "onCommand:extension.checkScriptSyntax",
+    "onCommand:extension.validateModel"
   ],
   "main": "./src/extension",
   "contributes": {
@@ -19,6 +20,10 @@
       {
         "command": "extension.checkScriptSyntax",
         "title": "Checks the syntax of QAE script"
+      },
+      {
+        "command": "extension.validateModel",
+        "title": "Show the data model using catwalk"
       }
     ],
     "keybindings": [
