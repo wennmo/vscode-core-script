@@ -13,13 +13,13 @@ const session = enigma.create({
 });
 
 const script = `
-Characters:
+Characters
 Load Chr(RecNo()+Ord('A')-1) as Alpha, RecNo() as Num autogenerate 26;
 ASCII:
 Load
 if(RecNo()>=65 and RecNo()<=90,RecNo()-64) as Num,
   Chr(RecNo()) as AsciiAlpha,
-RecNo() as AsciiNum
+ReNo() as AsciiNum
 autogenerate 255
 Where (RecNo()>=32 and RecNo()<=126) or RecNo()>=160 ;
 Transactions:
@@ -43,48 +43,29 @@ Comment Field Dim1 With "This is a field comment";
 `;
 
 async function checkScriptSyntax() {
+  //session.on("traffic:*", (direction, data) => console.log("session", direction, JSON.stringify(data)));
   const qix = await session.open();
   const app = await qix.createSessionApp();
   await app.setScript(script);
-  return await app.checkScriptSyntax();
+  const errors = await app.checkScriptSyntax();
+  console.log(`Errors: ${JSON.stringify(errors)}`);
+  return errors;
 }
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "vscode-core-script" is now active!');
-
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.checkScriptSyntax', function () {
+    let disposable = vscode.commands.registerCommand('extension.checkScriptSyntax', async function () {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
-        vscode.window.showInformationMessage('Lets check');
-        const errors = checkScriptSyntax();
-
-        if (errors) {
-          vscode.window.showInformationMessage(`Found errors: ${JSON.stringify(errors)}`);
-        } else {
-          vscode.window.showInformationMessage("No errors found");
-        }
-        //get config
-
-        //open socket
-
-        //get script from window
-
-        //create session app
-
-        //setscript
-
-        //check script syntax
-
-        //display status
+        vscode.window.showInformationMessage('Lets check the script');
+        const errors = await checkScriptSyntax();
+        vscode.window.showInformationMessage(`Found errors: ${JSON.stringify(errors)}`);
     });
 
     context.subscriptions.push(disposable);
