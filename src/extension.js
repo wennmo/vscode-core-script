@@ -6,8 +6,13 @@ const net = require("net");
 const enigma = require('enigma.js');
 const schema = require('enigma.js/schemas/12.170.2.json');
 
-const host = "localhost";
-const port = 9076;
+const conf = vscode.workspace.getConfiguration("engine");
+const host = conf.get("host");
+const port = conf.get("port");
+
+const engine = `${host}:${port}`;
+console.log(`Using engine: ${engine}`);
+
 const session = enigma.create({
   schema,
   url: `ws://${host}:${port}/app/engineData/`,

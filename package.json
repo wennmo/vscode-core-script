@@ -22,7 +22,20 @@
       }
     ],
     "configuration": {
-      "engine": "./config.json"
+      "type": "object",
+      "title": "QIX engine configuration",
+      "properties": {
+        "engine.host": {
+          "type": "string",
+          "default": "localhost",
+          "description": "Host name for the QIX Engine"
+        },
+        "engine.port": {
+          "type": ["string", "number"],
+          "default": 9076,
+          "description": "Port for the QIX Engine"
+        }
+      }
     }
   },
   "scripts": {
