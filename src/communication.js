@@ -42,10 +42,9 @@ exports.checkScriptSyntax = async function checkScriptSyntax(script) {
     const app = await qix.createSessionApp();
     await app.setScript(script);
     const errors = await app.checkScriptSyntax();
-    console.log(`Errors: ${JSON.stringify(errors)}`);
     session.close();
 
-    errors.length > 0 ? window.showInformationMessage(`Found errors!: ${JSON.stringify(errors)}`) : window.showInformationMessage(`No script errors found!`);
+    errors.length > 0 ? window.showErrorMessage(`Found errors!: ${JSON.stringify(errors)}`) : window.showInformationMessage(`No script errors found!`);
     return errors;
   }
   return [];
