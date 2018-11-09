@@ -4,6 +4,7 @@ const { window, StatusBarAlignment, commands, languages, Range, Position, Diagno
 const { checkScriptSyntax } = require("./check-script-syntax")
 
 let nbrScriptErrors = 0;
+let diagnosticCollection = languages.createDiagnosticCollection("QVS");
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -21,22 +22,28 @@ function activate(context) {
     const script = editor._documentData._lines.join('\r\n');
     const uri = editor._documentData._uri;
 
-    let diagnosticCollection = languages.createDiagnosticCollection("QVS");
     let diagnostics = [];
-    
-    const start = new Position(1, 1);
-    const end = new Position(2, 1);
+    diagnosticCollection.clear();
 
-    const range = new Range(start, end);
-    const message = 'The human-readable message.';
-
-    diagnostics.push(new Diagnostic(range, message, DiagnosticSeverity.Warning));
-    diagnosticCollection.set(uri, diagnostics);
 
     // Display a message box to the user
     window.showInformationMessage('Lets check the script');
     const errors = await checkScriptSyntax(script);
     nbrScriptErrors = errors.length;
+
+    errors.forEach(error => {
+      if (!error.qSecondaryFailure) {
+        const start = new Position(error.qLineInTab, error.qColInLine);
+        const end = new Position(error.qLineInTab, error.qColInLine + error.qErrLen);
+
+        const range = new Range(start, end);
+        const message = 'Syntax error found!';
+
+        diagnostics.push(new Diagnostic(range, message, DiagnosticSeverity.Error));
+      }
+    });
+
+    diagnosticCollection.set(uri, diagnostics);
     updateStatus(scriptErrors);
   });
 
