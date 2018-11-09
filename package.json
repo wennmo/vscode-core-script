@@ -3,6 +3,7 @@
     "displayName": "vscode-core-script",
     "description": "",
     "version": "0.0.1",
+    "publisher": "wennmo",
     "engines": {
         "vscode": "^1.28.0"
     },
@@ -19,7 +20,10 @@
                 "command": "extension.sayHello",
                 "title": "Hello World"
             }
-        ]
+        ],
+        "configuration": {
+          "engine": "./config.json"
+        }
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
