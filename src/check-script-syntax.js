@@ -44,7 +44,8 @@ exports.checkScriptSyntax = async function checkScriptSyntax(script) {
     const errors = await app.checkScriptSyntax();
     console.log(`Errors: ${JSON.stringify(errors)}`);
     session.close();
-    window.showInformationMessage(`Found errors: ${JSON.stringify(errors)}`);
+
+    errors.length > 0 ? window.showInformationMessage(`Found errors!: ${JSON.stringify(errors)}`) : window.showInformationMessage(`No script errors found!`);
     return errors;
   }
   return [];
