@@ -4,8 +4,6 @@ const { checkScriptSyntax} = require("./communication")
 let diagnosticCollection = languages.createDiagnosticCollection("QVS");
 
 exports.checkScriptSyntaxCommand = commands.registerCommand('extension.checkScriptSyntax', async function () {
-  // The code you place here will be executed every time your command is executed
-
   const editor = window.activeTextEditor;
   const script = editor._documentData._lines.join('\r\n');
   const uri = editor._documentData._uri;
@@ -13,9 +11,9 @@ exports.checkScriptSyntaxCommand = commands.registerCommand('extension.checkScri
   let diagnostics = [];
   diagnosticCollection.clear();
 
-
-  // Display a message box to the user
   const errors = await checkScriptSyntax(script);
+
+  errors.length > 0 ? window.showErrorMessage(`Found errors!: ${JSON.stringify(errors)}`) : window.showInformationMessage(`No script errors found!`);
 
   errors.forEach(error => {
     if (!error.qSecondaryFailure) {

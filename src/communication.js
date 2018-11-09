@@ -23,17 +23,22 @@ function isReachable(port, opts) {
   }));
 }
 
-exports.checkScriptSyntax = async function checkScriptSyntax(script) {
+function getConfig() {
   const conf = workspace.getConfiguration("engine");
-  const host = conf.get("host");
-  const port = conf.get("port");
+  return {
+    host: conf.get("host"),
+    port: conf.get("port"),
+  }
+}
 
-  const alive = await isReachable(port, { host });
+exports.checkScriptSyntax = async function checkScriptSyntax(script) {
+  const config = getConfig();
+  const alive = await isReachable(config.port, { host: config.host });
   if (alive === true) {
 
     const session = enigma.create({
       schema,
-      url: `ws://${host}:${port}/app/engineData/`,
+      url: `ws://${config.host}:${config.port}/app/engineData/`,
       createSocket: url => new WebSocket(url),
     });
 
@@ -43,8 +48,6 @@ exports.checkScriptSyntax = async function checkScriptSyntax(script) {
     await app.setScript(script);
     const errors = await app.checkScriptSyntax();
     session.close();
-
-    errors.length > 0 ? window.showErrorMessage(`Found errors!: ${JSON.stringify(errors)}`) : window.showInformationMessage(`No script errors found!`);
     return errors;
   }
   return [];
