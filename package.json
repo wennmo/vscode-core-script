@@ -23,7 +23,7 @@
       },
       {
         "command": "extension.validateModel",
-        "title": "Show the data model using catwalk"
+        "title": "Show the data model using Catwalk"
       }
     ],
     "keybindings": [
