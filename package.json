@@ -1,39 +1,51 @@
 {
-    "name": "vscode-core-script",
-    "displayName": "vscode-core-script",
-    "description": "",
-    "version": "0.0.1",
-    "publisher": "wennmo",
-    "engines": {
-        "vscode": "^1.28.0"
-    },
-    "categories": [
-        "Other"
+  "name": "vscode-core-script",
+  "displayName": "vscode-core-script",
+  "description": "",
+  "version": "0.0.1",
+  "publisher": "wennmo",
+  "engines": {
+    "vscode": "^1.28.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.sayHello"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.checkScriptSyntax",
+        "title": "Checks the syntax of QAE script"
+      }
     ],
-    "activationEvents": [
-        "onCommand:extension.sayHello"
-    ],
-    "main": "./extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.sayHello",
-                "title": "Hello World"
-            }
-        ],
-        "configuration": {
-          "engine": "./config.json"
+    "menus": {
+      "debug/qlik": [
+        {
+          "when": "resourceLangId == qvs",
+          "command": "extension.checkScriptSyntax",
+          "group": "core-script"
         }
+      ]
     },
-    "scripts": {
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.21",
-        "eslint": "^4.11.0",
-        "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
+    "configuration": {
+      "engine": "./config.json"
     }
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.21",
+    "eslint": "^4.11.0",
+    "@types/node": "^8.10.25",
+    "@types/mocha": "^2.2.42"
+  },
+  "dependencies": {
+    "enigma.js": "^2.3.0"
+  }
 }
