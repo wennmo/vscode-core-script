@@ -52,3 +52,28 @@ exports.checkScriptSyntax = async function checkScriptSyntax(script) {
   }
   return [];
 }
+
+exports.reloadScriptSessionApp = async function reloadScriptSessionApp(script) {
+  const config = getConfig();
+  const alive = await isReachable(config.port, { host: config.host });
+
+  if (alive === true) {
+    const url = `ws://${config.host}:${config.port}/app/engineData/identity/${+new Date()}`
+    const session = enigma.create({
+      schema,
+      url,
+      createSocket: url => new WebSocket(url),
+    });
+
+    const qix = await session.open();
+    const app = await qix.createSessionApp();
+    await app.setScript(script);
+    const result = await app.doReload();
+
+    if(!result) {
+      window.showErrorMessage('Failed to reload app');
+    }
+
+    return url;
+  }
+}
