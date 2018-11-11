@@ -23,7 +23,7 @@ function isReachable(port, opts) {
   }));
 }
 
-function getConfig() {
+const getConfig = () => {
   const conf = workspace.getConfiguration("engine");
   return {
     host: conf.get("host"),
@@ -70,10 +70,31 @@ exports.reloadScriptSessionApp = async function reloadScriptSessionApp(script) {
     await app.setScript(script);
     const result = await app.doReload();
 
-    if(!result) {
+    if (!result) {
       window.showErrorMessage('Failed to reload app');
     }
 
     return url;
   }
 }
+
+exports.getEngineVersion = async function getEngineVersion() {
+  const config = getConfig();
+  const alive = await isReachable(config.port, { host: config.host });
+
+  if (alive === true) {
+    const url = `ws://${config.host}:${config.port}/app/engineData/identity/${+new Date()}`
+    const session = enigma.create({
+      schema,
+      url,
+      createSocket: url => new WebSocket(url),
+    });
+
+    const qix = await session.open();
+    const result = await qix.engineVersion();
+    session.close();
+    return result.qComponentVersion;
+  }
+}
+
+exports.getConfig = getConfig;
