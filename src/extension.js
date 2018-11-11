@@ -1,4 +1,4 @@
-const { checkScriptSyntaxCommand } = require("./check-script-syntax-command");
+const { checkScriptSyntaxCommand } = require('./check-script-syntax-command');
 const { validateModel } = require('./validate-model-command');
 
 // this method is called when your extension is activated
