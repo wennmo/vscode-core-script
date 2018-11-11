@@ -39,7 +39,7 @@ class Engine extends vscode.TreeItem {
     this.command = command;
     this.iconPath = {
       light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
-      dark: path.join(__filename, '..', '..', 'resources', 'dark', 'server-solid.svg')
+      dark: path.join(__filename, '..', '..', 'resources', 'dark', 'server-solid_.svg')
     };
     this.contextValue = 'engine';
   }
@@ -52,8 +52,8 @@ class Doc extends vscode.TreeItem {
     this.collapsibleState = collapsibleState;
     this.command = command;
     this.iconPath = {
-      light: path.join(__filename, '..', '..', 'resources', 'light', 'document.svg'),
-      dark: path.join(__filename, '..', '..', 'resources', 'dark', 'document.svg')
+      light: path.join(__filename, '..', '..', 'resources', 'qvf.svg'),
+      dark: path.join(__filename, '..', '..', 'resources', 'qvf.svg')
     };
     this.contextValue = 'app';
   }
