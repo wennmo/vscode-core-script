@@ -21,6 +21,7 @@ class Doc extends vscode.TreeItem {
   constructor(label, doc, collapsibleState, command) {
     super(label, collapsibleState);
     this.label = label;
+    this.docId = doc.qDocId;
     this.description = doc.qMeta.description;
     this.collapsibleState = collapsibleState;
     this.command = command;
