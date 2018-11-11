@@ -18,47 +18,47 @@
   "main": "./src/extension",
   "contributes": {
     "viewsContainers": {
-			"activitybar": [
-				{
-					"id": "core-script",
-					"title": "Display QAE",
-					"icon": "resources/qlik.svg"
-				}
-			]
+      "activitybar": [
+        {
+          "id": "core-script",
+          "title": "Display QAE",
+          "icon": "resources/qlik.svg"
+        }
+      ]
     },
     "views": {
-			"core-script": [
-				{
-					"id": "qlikDocs",
-					"name": "Apps"
-				}
-			]
-		},
+      "core-script": [
+        {
+          "id": "qlikDocs",
+          "name": "Apps"
+        }
+      ]
+    },
     "commands": [
       {
-				"command": "qlikDocs.addDoc",
-				"title": "Create new app",
-				"icon": {
-					"light": "resources/light/add.svg",
-					"dark": "resources/dark/add.svg"
-				}
-			},
-			{
-				"command": "qlikDocs.refresh",
-				"title": "Refresh app list",
-				"icon": {
-					"light": "resources/light/refresh.svg",
-					"dark": "resources/dark/refresh.svg"
-				}
+        "command": "qlikDocs.addDoc",
+        "title": "Create new app",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
       },
       {
-				"command": "qlikDocs.getDoc",
-				"title": "Get loadscript"
+        "command": "qlikDocs.refresh",
+        "title": "Refresh app list",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
       },
       {
-				"command": "qlikDocs.setDoc",
-				"title": "Set loadscript"
-			},
+        "command": "qlikDocs.getDoc",
+        "title": "Get loadscript"
+      },
+      {
+        "command": "qlikDocs.setDoc",
+        "title": "Set loadscript"
+      },
       {
         "command": "extension.checkScriptSyntax",
         "title": "Checks the syntax of QAE script"
@@ -69,29 +69,29 @@
       }
     ],
     "menus": {
-			"view/title": [
-				{
-					"command": "qlikDocs.addDoc",
-					"when": "view == qlikDocs",
-					"group": "navigation@0"
-				},
-				{
-					"command": "qlikDocs.refresh",
-					"when": "view == qlikDocs",
-					"group": "navigation@2"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "qlikDocs.getDoc",
-					"when": "view == qlikDocs && viewItem == app"
+      "view/title": [
+        {
+          "command": "qlikDocs.addDoc",
+          "when": "view == qlikDocs",
+          "group": "navigation@0"
         },
         {
-					"command": "qlikDocs.setDoc",
-					"when": "view == qlikDocs && viewItem == app"
-				}
-			]
-		},
+          "command": "qlikDocs.refresh",
+          "when": "view == qlikDocs",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "qlikDocs.getDoc",
+          "when": "view == qlikDocs && viewItem == app"
+        },
+        {
+          "command": "qlikDocs.setDoc",
+          "when": "view == qlikDocs && viewItem == app"
+        }
+      ]
+    },
     "keybindings": [
       {
         "command": "extension.checkScriptSyntax",

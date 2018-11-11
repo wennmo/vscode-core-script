@@ -22,13 +22,8 @@ function isReachable(port, opts) {
   }));
 }
 
-<<<<<<< HEAD
-const getConfig = () => {
-  const conf = workspace.getConfiguration("engine");
-=======
 function getConfig() {
   const conf = workspace.getConfiguration('engine');
->>>>>>> origin/master
   return {
     host: conf.get('host'),
     port: conf.get('port'),
@@ -87,11 +82,11 @@ exports.getEngineVersion = async function getEngineVersion() {
   const alive = await isReachable(config.port, { host: config.host });
 
   if (alive === true) {
-    const url = `ws://${config.host}:${config.port}/app/engineData/identity/${+new Date()}`
+    const url = `ws://${config.host}:${config.port}/app/engineData/identity/${+new Date()}`;
     const session = enigma.create({
       schema,
       url,
-      createSocket: url => new WebSocket(url),
+      createSocket: () => new WebSocket(url),
     });
 
     const qix = await session.open();
@@ -99,6 +94,8 @@ exports.getEngineVersion = async function getEngineVersion() {
     session.close();
     return result.qComponentVersion;
   }
-}
+
+  return '';
+};
 
 exports.getConfig = getConfig;
