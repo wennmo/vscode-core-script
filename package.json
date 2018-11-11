@@ -97,6 +97,11 @@
         "command": "extension.checkScriptSyntax",
         "key": "ctrl+alt+o",
         "when": "editorTextFocus && resourceExtname == .qvs"
+      },
+      {
+        "command": "extension.checkScriptSyntax",
+        "key": "ctrl+s",
+        "when": "editorTextFocus && resourceExtname == .qvs"
       }
     ],
     "configuration": {
@@ -121,17 +126,21 @@
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
+    "test": "node ./node_modules/vscode/bin/test",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src"
   },
   "devDependencies": {
-    "typescript": "^2.6.1",
-    "vscode": "^1.1.21",
-    "eslint": "^4.11.0",
-    "@types/node": "^8.10.25",
-    "@types/mocha": "^2.2.42"
+    "@types/mocha": "2.2.42",
+    "@types/node": "8.10.25",
+    "eslint": "5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "typescript": "2.6.1",
+    "vscode": "1.1.21"
   },
   "dependencies": {
-    "enigma.js": "^2.3.0",
-    "ws": "^6.1.0"
+    "enigma.js": "2.3.0",
+    "ws": "6.1.0"
   }
 }
