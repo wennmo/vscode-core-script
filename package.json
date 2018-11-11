@@ -52,11 +52,11 @@
         }
       },
       {
-        "command": "qlikDocs.getDoc",
+        "command": "qlikDocs.getScript",
         "title": "Get loadscript"
       },
       {
-        "command": "qlikDocs.setDoc",
+        "command": "qlikDocs.setScript",
         "title": "Set loadscript"
       },
       {
@@ -83,11 +83,11 @@
       ],
       "view/item/context": [
         {
-          "command": "qlikDocs.getDoc",
+          "command": "qlikDocs.getScript",
           "when": "view == qlikDocs && viewItem == app"
         },
         {
-          "command": "qlikDocs.setDoc",
+          "command": "qlikDocs.setScript",
           "when": "view == qlikDocs && viewItem == app"
         }
       ]

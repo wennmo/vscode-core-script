@@ -61,7 +61,7 @@ exports.checkScriptSyntax = async function checkScriptSyntax(script) {
 };
 
 exports.reloadScriptSessionApp = async function reloadScriptSessionApp(script) {
-  const append = `/identity/${+new Date()}/ttl/60`;
+  const append = `/identity/${+new Date()}/ttl/60`; // rename to keepalive???
 
   const { qix, session } = await createSession(append);
 
@@ -90,6 +90,29 @@ exports.getEngineVersion = async function getEngineVersion() {
   }
 
   return '';
+};
+
+exports.getScript = async function getScript(appName) {
+  const { qix, session } = await createSession();
+
+  if (qix) {
+    const app = await qix.openDoc(appName);
+    const script = await app.getScript();
+    session.close();
+    return script;
+  }
+  return null;
+};
+
+exports.getDocList = async function getScript() {
+  const { qix, session } = await createSession();
+
+  if (qix) {
+    const docs = await qix.getDocList();
+    session.close();
+    return docs;
+  }
+  return null;
 };
 
 exports.getConfig = getConfig;

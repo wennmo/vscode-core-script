@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 const vscode = require('vscode');
 const path = require('path');
-const { getConfig, getEngineVersion } = require('./communication');
+const { getConfig, getEngineVersion, getDocList } = require('./communication');
 
 class Engine extends vscode.TreeItem {
   constructor(label, collapsibleState, command) {
@@ -18,9 +18,10 @@ class Engine extends vscode.TreeItem {
 }
 
 class Doc extends vscode.TreeItem {
-  constructor(label, collapsibleState, command) {
+  constructor(label, doc, collapsibleState, command) {
     super(label, collapsibleState);
     this.label = label;
+    this.description = doc.qMeta.description;
     this.collapsibleState = collapsibleState;
     this.command = command;
     this.iconPath = {
@@ -31,7 +32,7 @@ class Doc extends vscode.TreeItem {
   }
 
   get tooltip() {
-    return 'Insert info about the app';
+    return `${this.description}`;
   }
 }
 
@@ -53,11 +54,13 @@ class Docs {
       const item = new Engine(label, vscode.TreeItemCollapsibleState.Collapsed);
       return [item];
     }
-    const doc1 = new Doc('Should be a doc1', vscode.TreeItemCollapsibleState.None);
-    const doc2 = new Doc('Should be a doc2', vscode.TreeItemCollapsibleState.None);
-    const doc3 = new Doc('Should be a doc3', vscode.TreeItemCollapsibleState.None);
 
-    return [doc1, doc2, doc3];
+    const docs = await getDocList();
+    const docsTreeItems = docs.map((doc) => { //eslint-disable-line
+      return new Doc(doc.qTitle, doc, vscode.TreeItemCollapsibleState.None);
+    });
+
+    return docsTreeItems;
   }
 }
 exports.Docs = Docs;
