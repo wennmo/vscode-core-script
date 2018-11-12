@@ -14,7 +14,8 @@
     "onView:qlikDocs",
     "onCommand:extension.checkScriptSyntax",
     "onCommand:extension.validateModel",
-    "onCommand:qlikDocs.getScript"
+    "onCommand:qlikDocs.getScript",
+    "onCommand:extension.getCtrlScript"
   ],
   "main": "./src/extension",
   "contributes": {
@@ -67,6 +68,10 @@
       {
         "command": "extension.validateModel",
         "title": "Show the data model using Catwalk"
+      },
+      {
+        "command": "extension.getCtrlScript",
+        "title": "Insert the Qlik Ctrl+0+0 script into your load script"
       }
     ],
     "menus": {
@@ -97,11 +102,6 @@
       {
         "command": "extension.checkScriptSyntax",
         "key": "ctrl+alt+o",
-        "when": "editorTextFocus && resourceExtname == .qvs"
-      },
-      {
-        "command": "extension.checkScriptSyntax",
-        "key": "ctrl+s",
         "when": "editorTextFocus && resourceExtname == .qvs"
       },
       {
