@@ -1,4 +1,6 @@
-const { window, commands, SnippetString, languages } = require('vscode');
+const {
+  window, commands, SnippetString, languages,
+} = require('vscode');
 
 const ctrlScript = `
 SET ThousandSep=',';
