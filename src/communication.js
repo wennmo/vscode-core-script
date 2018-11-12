@@ -132,7 +132,12 @@ exports.update = async function update(appName, script) {
   if (qix) {
     const app = await qix.openDoc(appName);
     await app.setScript(script);
-    await app.doReload();
+    const result = await app.doReload();
+
+    if (!result) {
+      window.showErrorMessage('Failed to reload app');
+    }
+
     await app.doSave();
     session.close();
     return app;
