@@ -48,11 +48,11 @@ exports.update = commands.registerCommand('qlikDocs.update', async (args) => {
   const editor = window.activeTextEditor;
   const script = editor._documentData._lines.join('\r\n');
 
-  const app = await update(appName, script);
-  if (app) {
+
+  try {
+    await update(appName, script);
     window.showInformationMessage(`The app ${appName} has been updated`);
-  } else {
-    window.showErrorMessage('Reload failed');
+  } catch (err) {
+    window.showErrorMessage(`Update failed with: ${err.toString()}`);
   }
-  // todo: check if activeDoc is valid script abd that reload was OK
 });
