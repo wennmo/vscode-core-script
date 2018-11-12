@@ -55,23 +55,23 @@
       },
       {
         "command": "qlikDocs.getScript",
-        "title": "Get loadscript"
+        "title": "Qlik: Get load script"
       },
       {
         "command": "qlikDocs.update",
-        "title": "Update app (set script, reload and save)"
+        "title": "Qlik: Update app (set script, reload and save)"
       },
       {
         "command": "extension.checkScriptSyntax",
-        "title": "Checks the syntax of Qlik Associative Engine script"
+        "title": "Qlik: Checks the syntax of Qlik Associative Engine script"
       },
       {
         "command": "extension.validateModel",
-        "title": "Show the data model using Catwalk"
+        "title": "Qlik: Show the data model using Catwalk"
       },
       {
         "command": "extension.getCtrlScript",
-        "title": "Insert the Qlik Ctrl+0+0 script into your load script"
+        "title": "Qlik: Insert the Qlik Ctrl+0+0 script into your load script"
       }
     ],
     "menus": {
@@ -133,6 +133,16 @@
           ],
           "default": 9076,
           "description": "Port for the Qlik Associative Engine"
+        },
+        "engine.secure": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether wss or ws should be used when connecting to Qlik Associative Engine"
+        },
+        "engine.headers": {
+          "type": "object",
+          "default": null,
+          "description": "Configure headers to be used when connecting to Qlik Associative Engine"
         }
       }
     }

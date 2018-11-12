@@ -27,6 +27,8 @@ const getConfig = () => {
   return {
     host: conf.get('host'),
     port: conf.get('port'),
+    headers: conf.get('headers'),
+    secure: conf.get('secure'),
   };
 };
 
@@ -36,8 +38,9 @@ const createSession = async (append = '') => {
   if (alive === true) {
     const session = enigma.create({
       schema,
-      url: `ws://${config.host}:${config.port}/app/engineData/${append}`,
+      url: `${config.secure ? 'wss' : 'ws'}://${config.host}:${config.port}/app/engineData/${append}`,
       createSocket: url => new WebSocket(url),
+      headers: config.headers,
     });
 
     const qix = await session.open();
