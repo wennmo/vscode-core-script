@@ -11,6 +11,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:qlik",
     "onView:qlikDocs",
     "onCommand:extension.checkScriptSyntax",
     "onCommand:extension.validateModel",

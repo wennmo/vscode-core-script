@@ -1,5 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+const { workspace, commands } = require('vscode');
 const { checkScriptSyntaxCommand } = require('./check-script-syntax-command');
 const { validateModel } = require('./validate-model-command');
 const { getDocTree } = require('./docs');
@@ -16,6 +17,12 @@ function activate(context) {
   context.subscriptions.push(update);
   context.subscriptions.push(addDoc);
   context.subscriptions.push(getCtrlScript);
+
+  workspace.onDidSaveTextDocument((document) => {
+    if (document.languageId === 'qlik') {
+      commands.executeCommand('extension.checkScriptSyntax');
+    }
+  });
 }
 
 exports.activate = activate;
