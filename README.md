@@ -3,6 +3,8 @@
 
 # vscode-core-script
 
+![](flow.gif)
+
 ## Description
 
 This repo contains a vscode extension for developing and validating scripts using the editor. You can validate the script syntax, load the script in Qlik Associative Engine and view the current data model using `Catwalk`.
