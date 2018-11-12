@@ -76,6 +76,6 @@ const docTree = new Docs();
 exports.getDocTree = window.registerTreeDataProvider('qlikDocs', docTree);
 
 exports.refresh = commands.registerCommand('qlikDocs.refresh', async () => {
-  window.showInformationMessage('Sooo fresh and soo clean, clean');
   docTree.refresh();
+  window.showInformationMessage('List of available apps was updated');
 });
