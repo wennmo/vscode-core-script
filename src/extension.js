@@ -1,11 +1,50 @@
+// The module 'vscode' contains the VS Code extensibility API
+// Import the module and reference it with the alias vscode in your code below
+const { window, commands, workspace } = require('vscode');
 const { checkScriptSyntaxCommand } = require('./check-script-syntax-command');
 const { validateModel } = require('./validate-model-command');
+const getDocTree = require('./docs');
+const { getScript } = require('./communication');
+
+const inputBoxOptions = {
+  placeHolder: 'myApp.qvf',
+  prompt: 'Name of the app.',
+  // TODO: validateInput function
+};
+
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
+  context.subscriptions.push(window.registerTreeDataProvider('qlikDocs', new getDocTree.Docs()));
   context.subscriptions.push(checkScriptSyntaxCommand);
   context.subscriptions.push(validateModel);
+
+  context.subscriptions.push(commands.registerCommand('qlikDocs.getScript', async (args) => {
+    let appName;
+
+    if (args && args.docId) {
+      appName = args.docId;
+    } else {
+      appName = await window.showInputBox(inputBoxOptions);
+    }
+
+    const script = await getScript(appName);
+    if (script == null) {
+      window.showErrorMessage('No script found!');
+    } else {
+      const doc = await workspace.openTextDocument({ language: 'qlik', content: script });
+      window.showTextDocument(doc);
+    }
+  }));
+
+  context.subscriptions.push(commands.registerCommand('qlikDocs.addDoc', async () => {
+    const appName = await window.showInputBox(inputBoxOptions);
+
+    if (appName) {
+      window.showInformationMessage(`Lets add the app: ${appName}`);
+    }
+  }));
 }
 
 exports.activate = activate;

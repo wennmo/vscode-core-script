@@ -11,12 +11,55 @@
     "Other"
   ],
   "activationEvents": [
+    "onView:qlikDocs",
     "onCommand:extension.checkScriptSyntax",
-    "onCommand:extension.validateModel"
+    "onCommand:extension.validateModel",
+    "onCommand:qlikDocss.getScript"
   ],
   "main": "./src/extension",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "core-script",
+          "title": "Display QAE",
+          "icon": "resources/qlik.svg"
+        }
+      ]
+    },
+    "views": {
+      "core-script": [
+        {
+          "id": "qlikDocs",
+          "name": "Apps"
+        }
+      ]
+    },
     "commands": [
+      {
+        "command": "qlikDocs.addDoc",
+        "title": "Create new app",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "qlikDocs.refresh",
+        "title": "Refresh app list",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "qlikDocs.getScript",
+        "title": "Get loadscript"
+      },
+      {
+        "command": "qlikDocs.setScript",
+        "title": "Set loadscript"
+      },
       {
         "command": "extension.checkScriptSyntax",
         "title": "Checks the syntax of QAE script"
@@ -26,6 +69,30 @@
         "title": "Show the data model using Catwalk"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "qlikDocs.addDoc",
+          "when": "view == qlikDocs",
+          "group": "navigation@0"
+        },
+        {
+          "command": "qlikDocs.refresh",
+          "when": "view == qlikDocs",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "qlikDocs.getScript",
+          "when": "view == qlikDocs && viewItem == app"
+        },
+        {
+          "command": "qlikDocs.setScript",
+          "when": "view == qlikDocs && viewItem == app"
+        }
+      ]
+    },
     "keybindings": [
       {
         "command": "extension.checkScriptSyntax",

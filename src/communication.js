@@ -22,25 +22,35 @@ function isReachable(port, opts) {
   }));
 }
 
-function getConfig() {
+const getConfig = () => {
   const conf = workspace.getConfiguration('engine');
   return {
     host: conf.get('host'),
     port: conf.get('port'),
   };
-}
+};
 
-exports.checkScriptSyntax = async function checkScriptSyntax(script) {
+const createSession = async (append = '') => {
   const config = getConfig();
   const alive = await isReachable(config.port, { host: config.host });
   if (alive === true) {
     const session = enigma.create({
       schema,
-      url: `ws://${config.host}:${config.port}/app/engineData/`,
+      url: `ws://${config.host}:${config.port}/app/engineData/${append}`,
       createSocket: url => new WebSocket(url),
     });
 
     const qix = await session.open();
+    return { qix, session };
+  }
+
+  return undefined;
+};
+
+exports.checkScriptSyntax = async function checkScriptSyntax(script) {
+  const { qix, session } = await createSession();
+
+  if (qix) {
     const app = await qix.createSessionApp();
     await app.setScript(script);
     const errors = await app.checkScriptSyntax();
@@ -51,18 +61,11 @@ exports.checkScriptSyntax = async function checkScriptSyntax(script) {
 };
 
 exports.reloadScriptSessionApp = async function reloadScriptSessionApp(script) {
-  const config = getConfig();
-  const alive = await isReachable(config.port, { host: config.host });
+  const append = `/identity/${+new Date()}/ttl/60`; // rename to keepalive???
 
-  if (alive === true) {
-    const url = `ws://${config.host}:${config.port}/app/engineData/identity/${+new Date()}`;
-    const session = enigma.create({
-      schema,
-      url,
-      createSocket: () => new WebSocket(url),
-    });
+  const { qix, session } = await createSession(append);
 
-    const qix = await session.open();
+  if (qix) {
     const app = await qix.createSessionApp();
     await app.setScript(script);
     const result = await app.doReload();
@@ -70,9 +73,46 @@ exports.reloadScriptSessionApp = async function reloadScriptSessionApp(script) {
     if (!result) {
       window.showErrorMessage('Failed to reload app');
     }
-
-    return url;
+    session.close();
+    return session.config.url;
   }
 
   return '';
 };
+
+exports.getEngineVersion = async function getEngineVersion() {
+  const { qix, session } = await createSession();
+
+  if (qix) {
+    const result = await qix.engineVersion();
+    session.close();
+    return result.qComponentVersion;
+  }
+
+  return '';
+};
+
+exports.getScript = async function getScript(appName) {
+  const { qix, session } = await createSession();
+
+  if (qix) {
+    const app = await qix.openDoc(appName);
+    const script = await app.getScript();
+    session.close();
+    return script;
+  }
+  return null;
+};
+
+exports.getDocList = async function getScript() {
+  const { qix, session } = await createSession();
+
+  if (qix) {
+    const docs = await qix.getDocList();
+    session.close();
+    return docs;
+  }
+  return null;
+};
+
+exports.getConfig = getConfig;
