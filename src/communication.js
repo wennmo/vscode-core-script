@@ -126,4 +126,18 @@ exports.createApp = async function getScript(appName) {
   return null;
 };
 
+exports.update = async function update(appName, script) {
+  const { qix, session } = await createSession();
+
+  if (qix) {
+    const app = await qix.openDoc(appName);
+    await app.setScript(script);
+    await app.doReload();
+    await app.doSave();
+    session.close();
+    return app;
+  }
+  return null;
+};
+
 exports.getConfig = getConfig;

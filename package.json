@@ -57,8 +57,8 @@
         "title": "Get loadscript"
       },
       {
-        "command": "qlikDocs.setScript",
-        "title": "Set loadscript"
+        "command": "qlikDocs.update",
+        "title": "Update app (set script, reload and save)"
       },
       {
         "command": "extension.checkScriptSyntax",
@@ -88,7 +88,7 @@
           "when": "view == qlikDocs && viewItem == app"
         },
         {
-          "command": "qlikDocs.setScript",
+          "command": "qlikDocs.update",
           "when": "view == qlikDocs && viewItem == app"
         }
       ]
