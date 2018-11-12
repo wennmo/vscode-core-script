@@ -10,7 +10,7 @@ exports.validateModelCommand = commands.registerCommand('extension.validateModel
     engineUrl = await reloadScriptSessionApp(script);
   } else {
     const engineConfig = await getConfig();
-    engineUrl = `ws://${engineConfig.host}:${engineConfig.port}${args.docId}`;
+    engineUrl = `${engineConfig.secure ? 'wss' : 'ws'}://${engineConfig.host}:${engineConfig.port}${args.docId}`;
   }
 
   const catwalkUrl = `https://catwalk.core.qlik.com/?engine_url=${engineUrl}`;
