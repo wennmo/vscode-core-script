@@ -63,7 +63,7 @@
       },
       {
         "command": "extension.checkScriptSyntax",
-        "title": "Checks the syntax of QAE script"
+        "title": "Checks the syntax of Qlik Associative Engine script"
       },
       {
         "command": "extension.validateModel",
@@ -90,11 +90,18 @@
       "view/item/context": [
         {
           "command": "qlikDocs.getScript",
-          "when": "view == qlikDocs && viewItem == app"
+          "when": "view == qlikDocs && viewItem == app",
+          "group": "order@0"
         },
         {
           "command": "qlikDocs.update",
-          "when": "view == qlikDocs && viewItem == app"
+          "when": "view == qlikDocs && viewItem == app",
+          "group": "order@1"
+        },
+        {
+          "command": "extension.validateModel",
+          "when": "view == qlikDocs && viewItem == app",
+          "group": "order@2"
         }
       ]
     },
@@ -112,12 +119,12 @@
     ],
     "configuration": {
       "type": "object",
-      "title": "QIX engine configuration",
+      "title": "Qlik Associative Engine configuration",
       "properties": {
         "engine.host": {
           "type": "string",
           "default": "localhost",
-          "description": "Host name for the QIX Engine"
+          "description": "Host name for the Qlik Associative Engine"
         },
         "engine.port": {
           "type": [
@@ -125,7 +132,7 @@
             "number"
           ],
           "default": 9076,
-          "description": "Port for the QIX Engine"
+          "description": "Port for the Qlik Associative Engine"
         }
       }
     }
