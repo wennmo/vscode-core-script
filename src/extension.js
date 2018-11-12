@@ -6,6 +6,12 @@ const { validateModel } = require('./validate-model-command');
 const getDocTree = require('./docs');
 const { getScript } = require('./communication');
 
+const inputBoxOptions = {
+  placeHolder: 'myApp.qvf',
+  prompt: 'Name of the app.',
+  // TODO: validateInput function
+};
+
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -14,8 +20,16 @@ function activate(context) {
   context.subscriptions.push(checkScriptSyntaxCommand);
   context.subscriptions.push(validateModel);
 
-  context.subscriptions.push(commands.registerCommand('qlikDocs.getScript', async (treeItemInfo) => {
-    const script = await getScript(treeItemInfo.docId);
+  context.subscriptions.push(commands.registerCommand('qlikDocs.getScript', async (args) => {
+    let appName;
+
+    if (args && args.docId) {
+      appName = args.docId;
+    } else {
+      appName = await window.showInputBox(inputBoxOptions);
+    }
+
+    const script = await getScript(appName);
     if (script == null) {
       window.showErrorMessage('No script found!');
     } else {
@@ -25,11 +39,7 @@ function activate(context) {
   }));
 
   context.subscriptions.push(commands.registerCommand('qlikDocs.addDoc', async () => {
-    const inputBoxOptions = {
-      placeHolder: 'myApp.qvf',
-      prompt: 'Name of the app.',
-      // TODO: validateInput function
-    };
+
     const appName = await window.showInputBox(inputBoxOptions);
 
     if (appName) {

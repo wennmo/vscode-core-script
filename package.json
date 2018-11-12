@@ -13,7 +13,8 @@
   "activationEvents": [
     "onView:qlikDocs",
     "onCommand:extension.checkScriptSyntax",
-    "onCommand:extension.validateModel"
+    "onCommand:extension.validateModel",
+    "onCommand:qlikDocss.getScript"
   ],
   "main": "./src/extension",
   "contributes": {
