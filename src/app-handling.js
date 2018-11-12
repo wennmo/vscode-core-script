@@ -1,5 +1,5 @@
 const { window, commands, workspace } = require('vscode');
-const { getScript } = require('./communication');
+const { getScript, createApp } = require('./communication');
 
 const inputBoxOptions = {
   placeHolder: 'myApp.qvf',
@@ -29,6 +29,9 @@ exports.addDoc = commands.registerCommand('qlikDocs.addDoc', async () => {
   const appName = await window.showInputBox(inputBoxOptions);
 
   if (appName) {
-    window.showInformationMessage(`Lets add the app: ${appName}`);
+    const app = await createApp(appName);
+    window.showInformationMessage(`Lets add the app: ${appName} / ${app}`);
   }
+
+  // todo: refresh applist
 });

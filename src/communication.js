@@ -115,4 +115,15 @@ exports.getDocList = async function getScript() {
   return null;
 };
 
+exports.createApp = async function getScript(appName) {
+  const { qix, session } = await createSession();
+
+  if (qix) {
+    const app = await qix.createApp(appName);
+    session.close();
+    return app;
+  }
+  return null;
+};
+
 exports.getConfig = getConfig;

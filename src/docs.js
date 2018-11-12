@@ -1,5 +1,7 @@
 /* eslint-disable class-methods-use-this */
-const { TreeItem, EventEmitter, TreeItemCollapsibleState, window } = require('vscode');
+const {
+  TreeItem, EventEmitter, TreeItemCollapsibleState, window, commands,
+} = require('vscode');
 const path = require('path');
 const { getConfig, getEngineVersion, getDocList } = require('./communication');
 
@@ -43,6 +45,10 @@ class Docs {
     this.onDidChangeTreeData = this._onDidChangeTreeData.event;
   }
 
+  refresh() {
+    this._onDidChangeTreeData.fire();
+  }
+
   getTreeItem(element) {
     return element;
   }
@@ -64,6 +70,12 @@ class Docs {
     return docsTreeItems;
   }
 }
-// exports.Docs = Docs;
 
-exports.getDocTree = window.registerTreeDataProvider('qlikDocs', new Docs());
+const docTree = new Docs();
+
+exports.getDocTree = window.registerTreeDataProvider('qlikDocs', docTree);
+
+exports.refresh = commands.registerCommand('qlikDocs.refresh', async () => {
+  window.showInformationMessage('Sooo fresh and soo clean, clean');
+  docTree.refresh();
+});
