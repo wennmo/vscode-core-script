@@ -102,12 +102,12 @@
       {
         "command": "extension.checkScriptSyntax",
         "key": "ctrl+alt+o",
-        "when": "editorTextFocus && resourceExtname == .qvs"
+        "when": "editorTextFocus && editorLangId == qlik"
       },
       {
         "command": "extension.validateModel",
         "key": "ctrl+shift+c",
-        "when": "editorTextFocus && resourceExtname == .qvs"
+        "when": "editorTextFocus && editorLangId == qlik"
       }
     ],
     "configuration": {
