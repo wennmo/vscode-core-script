@@ -1,4 +1,4 @@
-const { window, commands, SnippetString } = require('vscode');
+const { window, commands, SnippetString, languages } = require('vscode');
 
 const ctrlScript = `
 SET ThousandSep=',';
@@ -55,5 +55,6 @@ Autogenerate 1000
 
 exports.getCtrlScript = commands.registerCommand('extension.getCtrlScript', async () => {
   const editor = window.activeTextEditor;
+  languages.setTextDocumentLanguage(editor.document, 'qlik');
   editor.insertSnippet(new SnippetString(ctrlScript));
 });
