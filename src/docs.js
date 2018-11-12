@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
-const vscode = require('vscode');
+const { TreeItem, EventEmitter, TreeItemCollapsibleState, window } = require('vscode');
 const path = require('path');
 const { getConfig, getEngineVersion, getDocList } = require('./communication');
 
-class Engine extends vscode.TreeItem {
+class Engine extends TreeItem {
   constructor(label, collapsibleState, command) {
     super(label, collapsibleState);
     this.label = label;
@@ -17,7 +17,7 @@ class Engine extends vscode.TreeItem {
   }
 }
 
-class Doc extends vscode.TreeItem {
+class Doc extends TreeItem {
   constructor(label, doc, collapsibleState, command) {
     super(label, collapsibleState);
     this.label = label;
@@ -39,7 +39,7 @@ class Doc extends vscode.TreeItem {
 
 class Docs {
   constructor() {
-    this._onDidChangeTreeData = new vscode.EventEmitter();
+    this._onDidChangeTreeData = new EventEmitter();
     this.onDidChangeTreeData = this._onDidChangeTreeData.event;
   }
 
@@ -52,16 +52,18 @@ class Docs {
       const engine = getConfig();
       const version = await getEngineVersion();
       const label = `${engine.host}:${engine.port} (${version})`;
-      const item = new Engine(label, vscode.TreeItemCollapsibleState.Collapsed);
+      const item = new Engine(label, TreeItemCollapsibleState.Collapsed);
       return [item];
     }
 
     const docs = await getDocList();
     const docsTreeItems = docs.map((doc) => { //eslint-disable-line
-      return new Doc(doc.qTitle, doc, vscode.TreeItemCollapsibleState.None);
+      return new Doc(doc.qTitle, doc, TreeItemCollapsibleState.None);
     });
 
     return docsTreeItems;
   }
 }
-exports.Docs = Docs;
+// exports.Docs = Docs;
+
+exports.getDocTree = window.registerTreeDataProvider('qlikDocs', new Docs());

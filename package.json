@@ -14,7 +14,7 @@
     "onView:qlikDocs",
     "onCommand:extension.checkScriptSyntax",
     "onCommand:extension.validateModel",
-    "onCommand:qlikDocss.getScript"
+    "onCommand:qlikDocs.getScript"
   ],
   "main": "./src/extension",
   "contributes": {
@@ -22,7 +22,7 @@
       "activitybar": [
         {
           "id": "core-script",
-          "title": "Display QAE",
+          "title": "Qlik Associative Engine",
           "icon": "resources/qlik.svg"
         }
       ]
