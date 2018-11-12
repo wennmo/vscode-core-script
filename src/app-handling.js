@@ -52,8 +52,7 @@ exports.update = commands.registerCommand('qlikDocs.update', async (args) => {
   try {
     await update(appName, script);
     window.showInformationMessage(`The app ${appName} has been updated`);
-  }
-  catch (err) {
+  } catch (err) {
     window.showErrorMessage(`Update failed with: ${err.toString()}`);
   }
 });
