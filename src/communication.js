@@ -128,21 +128,22 @@ exports.createApp = async function getScript(appName) {
 
 exports.update = async function update(appName, script) {
   const { qix, session } = await createSession();
-
-  if (qix) {
+  try {
     const app = await qix.openDoc(appName);
     await app.setScript(script);
-    const result = await app.doReload();
-
-    if (!result) {
-      window.showErrorMessage('Failed to reload app');
+    reloadResult = await app.doReload();
+    if(reloadResult) {
+      await app.doSave();
     }
-
-    await app.doSave();
+    else {
+      throw new Error("Reload failed");
+    }
     session.close();
-    return app;
   }
-  return null;
+  catch (err) {
+    session.close();
+    throw err;
+  }
 };
 
 exports.getConfig = getConfig;
