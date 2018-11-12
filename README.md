@@ -46,6 +46,12 @@ To make it possible to view the data model created by your load script, the exte
 
 The command can be executed by running `Ctrl+Shift+c`.
 
+### Insert Qlik Ctrl+0+0 script
+
+There is a command available for inserting the Ctrl+0+0 script into your editor: `Qlik: Insert the Qlik Ctrl+0+0 script into your load script`.
+
+This command can be tied by a user to a key binding if often used.
+
 ### Stay tuned
 
 ## Try it out
