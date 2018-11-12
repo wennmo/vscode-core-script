@@ -4,6 +4,7 @@ const { checkScriptSyntaxCommand } = require('./check-script-syntax-command');
 const { validateModel } = require('./validate-model-command');
 const { getDocTree } = require('./docs');
 const { getScript, addDoc, update } = require('./app-handling');
+const { getCtrlScript } = require('./ctrl-script-command');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -14,6 +15,7 @@ function activate(context) {
   context.subscriptions.push(getScript);
   context.subscriptions.push(update);
   context.subscriptions.push(addDoc);
+  context.subscriptions.push(getCtrlScript);
 }
 
 exports.activate = activate;
