@@ -39,7 +39,6 @@ function activate(context) {
   }));
 
   context.subscriptions.push(commands.registerCommand('qlikDocs.addDoc', async () => {
-
     const appName = await window.showInputBox(inputBoxOptions);
 
     if (appName) {
