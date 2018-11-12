@@ -103,6 +103,11 @@
         "command": "extension.checkScriptSyntax",
         "key": "ctrl+s",
         "when": "editorTextFocus && resourceExtname == .qvs"
+      },
+      {
+        "command": "extension.validateModel",
+        "key": "ctrl+shift+c",
+        "when": "editorTextFocus && resourceExtname == .qvs"
       }
     ],
     "configuration": {
