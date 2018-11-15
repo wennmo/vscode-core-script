@@ -50,7 +50,7 @@ const checkProgress = async (qix, requestId) => {
   let progress = await qix.getProgress(requestId);
 
   while (!progress.qFinished) {
-    progress = await qix.getProgress(requestId);
+    progress = await qix.getProgress(requestId); // eslint-disable-line no-await-in-loop
 
     if (progress.qUserInteractionWanted) {
       qix.interactDone(requestId, InteractDef);
