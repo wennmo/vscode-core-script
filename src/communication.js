@@ -32,6 +32,33 @@ const getConfig = () => {
   };
 };
 
+const checkProgress = async (qix, requestId) => {
+  const InteractDef = {
+    Type: 0,
+    Title: '',
+    Msg: '',
+    Buttons: 0,
+    Line: '',
+    OldLineNr: 0,
+    NewLineNr: 0,
+    Path: '',
+    Hidden: false,
+    Result: 0,
+    Input: '',
+  };
+
+  let progress = await qix.getProgress(requestId);
+
+  while (!progress.qFinished) {
+    progress = await qix.getProgress(requestId);
+
+    if (progress.qUserInteractionWanted) {
+      qix.interactDone(requestId, InteractDef);
+    }
+  }
+  return true;
+};
+
 const createSession = async (append = '') => {
   const config = getConfig();
   const alive = await isReachable(config.port, { host: config.host });
@@ -42,6 +69,10 @@ const createSession = async (append = '') => {
       createSocket: url => new WebSocket(url),
       headers: config.headers,
     });
+
+    // bind traffic events to log what is sent and received on the socket:
+    // session.on('traffic:sent', data => console.log('sent:', data));
+    // session.on('traffic:received', data => console.log('received:', data));
 
     const qix = await session.open();
     return { qix, session };
@@ -64,14 +95,26 @@ exports.checkScriptSyntax = async function checkScriptSyntax(script) {
 };
 
 exports.reloadScriptSessionApp = async function reloadScriptSessionApp(script) {
-  const append = `/identity/${+new Date()}/ttl/60`; // rename to keepalive???
-
+  const append = `identity/${+new Date()}/ttl/60`; // rename to keepalive???
+  const conf = workspace.getConfiguration('engine');
+  const limit = conf.get('reloadLimit');
   const { qix, session } = await createSession(append);
+
+  let result;
 
   if (qix) {
     const app = await qix.createSessionApp();
     await app.setScript(script);
-    const result = await app.doReload();
+
+    if (!limit) {
+      result = await app.doReload();
+    } else {
+      await app.setFetchLimit(limit);
+      const request = app.doReload({ qDebug: true });
+      await qix.getInteract(request.requestId);
+
+      result = await checkProgress(qix, request.requestId);
+    }
 
     if (!result) {
       window.showErrorMessage('Failed to reload app');

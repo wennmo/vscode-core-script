@@ -144,6 +144,14 @@
           "type": "object",
           "default": null,
           "description": "Configure headers to be used when connecting to Qlik Associative Engine"
+        },
+        "engine.reloadLimit": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null,
+          "description": "Limits the number of rows of data to load from a data source"
         }
       }
     }
