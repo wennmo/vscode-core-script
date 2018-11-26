@@ -21,7 +21,9 @@ We also recommend you to install the [vscode-qlik](https://github.com/Gimly/vsco
 
 This extension will by default use `localhost:9076` for communication with a Qlik Associative Engine. However `host` and `port` can be configured in your user settings for `vscode` like [this](./.vscode/settings.json).
 
-If you want to connect with secure websocket and/or use headers you can also define them in settings:
+If you want to connect with secure websocket and/or use headers you can also define them in settings.
+
+If the `reloadLimit` is set the engine will reload the app in debug mode making it possible to limit the amount of rows loaded per field. Default is `null` = unlimited.
 
 ```json
 {
@@ -30,7 +32,8 @@ If you want to connect with secure websocket and/or use headers you can also def
   "engine.secure": true,
   "engine.headers": {
     "headerKey": "headerValue"
-  }
+  },
+  "engine.reloadLimit": 100
 }
 ```
 
